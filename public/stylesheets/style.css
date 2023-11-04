@@ -1,15 +1,132 @@
+/* fonts  */
+@import url('https://fonts.googleapis.com/css?family=Abel|Aguafina+Script|Artifika|Athiti|Condiment|Dosis|Droid+Serif|Farsan|Gurajada|Josefin+Sans|Lato|Lora|Merriweather|Noto+Serif|Open+Sans+Condensed:300|Playfair+Display|Rasa|Sahitya|Share+Tech|Text+Me+One|Titillium+Web');
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-image: linear-gradient(180deg, #cdc3ff 0, #9d9df2 50%, #7278b7 100%);
-  background-size: cover;
-}
+	margin: 0;
+    padding: 0;
+background: #585372;
+	background-image: linear-gradient( 135deg, #474250 10%, #696f8a 100%);
+	background-attachment: fixed;	
+	background-size: cover;
+	}
 
-.contenido{
-  text-align: center;
-  margin: 28% 0% 28% 0%;
-}
 
-a {
-  color: #00B7FF;
-}
+
+	#container {
+		display: flex;
+		flex-wrap: wrap;
+	  }
+	  
+	  .product-details {
+		flex: 1 1 100%;
+		max-width: 300px;
+		background-color: #ffffff;
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+		border-radius: 5px;
+		padding: 20px;
+		margin: 20px;
+		box-sizing: border-box;
+	  }
+	  
+	  .product-details h1 {
+		font-size: 24px;
+		color: #333333;
+		margin-top: 0;
+	  }
+	  
+	  .hint-star.star {
+		color: #f1c40f;
+	  }
+	  
+	  .information {
+		font-size: 20px;
+		color: #666666;
+		margin-bottom: 10px;
+	  }
+	  
+	  .control {
+		margin-top: 10px;
+	  }
+	  
+	  .btn {
+		background-color: #3498db;
+		color: #ffffff;
+		border: none;
+		border-radius: 5px;
+		padding: 10px 15px;
+		font-size: 18px;
+		cursor: pointer;
+	  }
+	  
+	  .product-image {
+		margin-top: 10px;
+		text-align: center;
+		clear: both;
+	  }
+	  
+	  .product-image img {
+		max-width: 100%;
+		height: 400px;
+		width: auto;
+
+	  }
+	  
+	  .info {
+		background-color: #333333;
+		color: #ffffff;
+		padding: 10px;
+		text-align: center;
+	  }
+	  
+	  .info h2 {
+		font-size: 16px;
+		margin-top: 0;
+	  }
+	  
+	  .info ul {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	  }
+	  
+	  .info ul li {
+		margin-bottom: 5px;
+	  }
+/*-------------------------------------------*/
+/*FIN DEL DISEÑO DE LAS TARJETAS DE PRODUCTOS*/
+/*-------------------------------------------*/
+
+  /*Estilos de la navbar*/
+
+    
+  .navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .navbar h1 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .navbar .logout-btn {
+    background-color: #2e73c2;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .navbar .logout-btn:hover {
+    background-color: #0c3463;
+  }
+
+
+  

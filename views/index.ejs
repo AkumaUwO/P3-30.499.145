@@ -6,12 +6,50 @@
   </head>
   <body>
 
-    <div class="contenido">
-      <h1>Hola Mundo!</h1>
-      <h2>Asdrith Contreras</h1>
-      <h3>C.I:30.499.145</h3>
-      <h3>Programación III - Sección 3</h3>
+    <div class="navbar">
+      <h1>Venta de Motos</h1>
+      <a href="/login" class="logout-btn">Administrar Productos</a>
     </div>
+    <div id="container">
+    <% productos.forEach((producto) => { %>
+        <!-- Start Product details -->
+        <div class="product-details">
+          <h1><%= producto.nombre %></h1>
+          <!-- Product rating -->
+          <span class="hint-star star">
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+            <i class="fa fa-star-o" aria-hidden="true"></i>
+          </span>
+          <p class="information"><%= producto.descripcion %></p>
+          <div class="control">
+            <button class="btn">
+              <span class="price"><%= producto.precio %> $</span>
+              <span class="shopping-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+              <span class="buy">Comprar</span>
+            </button>
+          </div>
+        </div>
+        <!-- End Product details -->
+    
+        <!-- Start product image & Information -->
+        <div class="product-image">
+          <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>">
+          <div class="info">
+            <h2>The Description</h2>
+            <ul>
+              <li><strong>Marca: </strong><%= producto.marca %></li>
+              <li><strong>Estado: </strong><%= producto.estado %></li>
+              <li><strong>Categoría: </strong><%= producto.categoria %></li>
+            </ul>
+          </div>
+        </div>
+        <!-- End product image -->
+      <% }); %>
+    </div>
+      
 
   </body>
 </html>

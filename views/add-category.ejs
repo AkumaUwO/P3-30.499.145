@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Panel de Administrador</title>
+  <link rel='stylesheet' href='/stylesheets/admin.css' />
+</head>
+<body>
+
+    <div class="navbar">
+      <h1>Panel de Administrador</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="admin-panel">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="location.href='/add-category'">Añadir categoría</button>
+          <button class="tab-btn" onclick="location.href='/add-product'">Añadir producto</button>
+          <button class="tab-btn" onclick="location.href='/add-image'">Añadir imagen</button>
+          <button class="tab-btn" onclick="location.href='/list'">Ver lista de productos</button>
+        </div>
+        <!-- Añadir categoría -->
+        <div id="add-category" class="tab-content active">
+          <h2>Añadir categoría</h2>
+          <form action="/add-category" method="post">
+            <div class="form-group">
+              <label for="product-name">Nombre de la categoría:</label>
+              <input type="text" id="category-name" name="category-name" placeholder="Ingrese el nombre de la categoría" required>
+            </div>
+            <button type="submit">Añadir categoría</button>
+        </form>
+        </div>
+        <!-- Añadir producto -->
+        <div id="add-product" class="tab-content">
+          <h2>Añadir producto</h2>
+        </div>
+
+        <!-- Añadir imagen -->
+        <div id="add-image" class="tab-content">
+          <h2>Añadir imagen</h2>
+        </div>
+
+        <!-- Lista de productos -->
+        <div id="product-list" class="tab-content">
+          <h2>Ver lista de productos</h2>
+        </div>
+      </div>
+    <script>
+        <% if (typeof message !== '' && message) { %>
+        // Verificar si hay un mensaje y mostrar una alerta con el contenido del mensaje
+          alert('<%= message %>');
+        <% } %>
+    </script>
+  <script src="/javascripts/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Panel de Administrador</title>
+  <link rel='stylesheet' href='/stylesheets/admin.css' />
+</head>
+<body>
+
+    <div class="navbar">
+      <h1>Panel de Administrador</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="admin-panel">
+        <div class="tabs">
+          <button class="tab-btn" onclick="location.href='/add-category'">Añadir categoría</button>
+          <button class="tab-btn" onclick="location.href='/add-product'">Añadir producto</button>
+          <button class="tab-btn" onclick="location.href='/add-image'">Añadir imagen</button>
+          <button class="tab-btn active" onclick="location.href='/list'">Ver lista de productos</button>
+        </div>
+        <!-- Añadir categoría -->
+        <div id="add-category" class="tab-content ">
+          <h2>Añadir categoría</h2>
+        </div>
+        <!-- Añadir producto -->
+        <div id="add-product" class="tab-content">
+          <h2>Añadir producto</h2>
+        </div>
+
+        <!-- Añadir imagen -->
+        <div id="add-image" class="tab-content">
+          <h2>Añadir imagen</h2>
+        </div>
+
+        <!-- Lista de productos -->
+        <div id="product-list" class="tab-content active">
+          <h2>Ver lista de productos</h2>
+          <!-- Lista de productos -->
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Marca</th>
+          <th>Estado</th>
+          <th>Código</th>
+          <th>Descripción</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Acciones</th> <!-- Columna para los botones de acciones -->
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí puedes generar las filas de la tabla dinámicamente desde la base de datos -->
+        <% productos.forEach((producto) => { %>
+        <tr>
+          <td><%= producto.nombre %></td>
+          <td><%= producto.marca %></td>
+          <td><%= producto.estado %></td>
+          <td><%= producto.codigo %></td>
+          <td><%= producto.descripcion %></td>
+          <td><%= producto.categoria %></td>
+          <td><%= producto.precio %></td>
+          <td>
+            <!-- Botón para eliminar producto -->
+            <button onclick="eliminarProducto('<%= producto.id %>')">Eliminar</button>
+            <!-- Botón para editar producto -->
+            <button onclick="editarProducto('<%= producto.id %>')">Editar</button>
+            <script>
+                function editarProducto(id) {
+                  // Redirecciona a la URL con el ID como parámetro
+                  window.location.href = `/actualizar-producto/${id}`;
+                }
+                function eliminarProducto(id) {
+                  // Redirecciona a la URL con el ID como parámetro
+                  window.location.href = `/eliminar-producto/${id}`;
+                }
+            </script>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+        </div>
+      </div>
+  <script src="/javascripts/admin.js"></script>
+</body>
+</html>

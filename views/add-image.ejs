@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Panel de Administrador</title>
+  <link rel='stylesheet' href='/stylesheets/admin.css' />
+</head>
+<body>
+
+    <div class="navbar">
+      <h1>Panel de Administrador</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="admin-panel">
+        <div class="tabs">
+          <button class="tab-btn " onclick="location.href='/add-category'">Añadir categoría</button>
+          <button class="tab-btn" onclick="location.href='/add-product'">Añadir producto</button>
+          <button class="tab-btn active" onclick="location.href='/add-image'">Añadir imagen</button>
+          <button class="tab-btn" onclick="location.href='/list'">Ver lista de productos</button>
+        </div>
+        <!-- Añadir categoría -->
+        <div id="add-category" class="tab-content active">
+          <h2>Añadir categoría</h2>
+        </div>
+        <!-- Añadir producto -->
+        <div id="add-product" class="tab-content">
+          <h2>Añadir producto</h2>
+        </div>
+
+        <!-- Añadir imagen -->
+        <div id="add-image" class="tab-content active">
+          <h2>Añadir imagen</h2>
+          <form action="/add-image" method="post">
+            <div class="form-group">
+              <label for="image-url">URL de la Imagen:</label>
+              <input type="url" id="image-url" name="image-url" placeholder="Ingrese la URL de la imagen" required>
+              <div class="image-preview">
+                <img id="preview-image" src="" alt="Vista previa de la imagen">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="product-id">Seleccione un Producto:</label>
+              <select id="product-id" name="product-id" required>
+                <!-- Aquí puedes generar las opciones del select dinámicamente desde la base de datos -->
+                <% productos.forEach((producto) => { %>
+                <option value="<%= producto.id %>"><%= producto.nombre %></option>
+                <% }); %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="is-highlighted">Destacado:</label>
+                
+                <input type="checkbox" id="is-highlighted" name="is-highlighted">
+        
+            </div>
+            <button type="submit">Añadir imagen</button>
+        </form>
+
+        <script>
+          <% if (typeof message !== '' && message) { %>
+          // Verificar si hay un mensaje y mostrar una alerta con el contenido del mensaje
+            alert('<%= message %>');
+          <% } %>
+        </script>
+        
+          <script>
+            // Obtener los elementos del formulario
+            const imageUrlInput = document.getElementById('image-url');
+            const previewImage = document.getElementById('preview-image');
+        
+            // Escuchar el evento "input" en el campo de la URL de la imagen
+            imageUrlInput.addEventListener('input', () => {
+              // Actualizar la vista previa de la imagen
+              previewImage.src = imageUrlInput.value;
+            });
+          </script>
+        </div>
+
+        <!-- Lista de productos -->
+        <div id="product-list" class="tab-content">
+          <h2>Ver lista de productos</h2>
+        </div>
+      </div>
+  <script src="/javascripts/admin.js"></script>
+</body>
+</html>
+
+

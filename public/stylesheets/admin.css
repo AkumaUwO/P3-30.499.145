@@ -1,0 +1,212 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(37, 36, 43);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .admin-panel {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tabs {
+    display: flex;
+  }
+  
+  .tab-btn {
+    padding: 10px 20px;
+    background-color: #f2f2f2;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+  }
+  
+  .tab-btn.active {
+    background-color: #fff;
+    border-color: #2e73c2;
+  }
+  
+  .tab-content {
+    display: none;
+    padding: 20px;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+  
+  h2 {
+    margin-top: 0;
+  }
+
+  /*ESTILOS DEL FORMULARIO AÑADIR PRODUCTOS*/
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input[type="url"] {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button[type="submit"] {
+    padding: 10px;
+    background-color: #2e73c2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    transition: .5;
+    background-color: #0c3463;
+  }
+
+  /*Estilos del formulario para subir imagenes*/
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    select,
+    input[type="checkbox"] {
+      width: 80%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 30px;
+      height: 30px;
+      border: 3px solid #ccc;
+      border-radius: 4px;
+      display: inline-block;
+      position: relative;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    input[type="checkbox"]:checked {
+      background-color: #4CAF50;
+      border-color: #4CAF50;
+    }
+
+    input[type="checkbox"]:checked::after {
+      content: "\2714";
+      font-size: 14px;
+      color: white;
+      position: absolute;
+      top: 2px;
+      left: 6px;
+    }
+
+    .image-preview {
+      margin-top: 20px;
+    }
+
+    .image-preview img {
+      max-width: 300px;
+      max-height: 300px;
+    }
+
+    /*Estilos de la navbar*/
+
+    
+    .navbar {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .navbar .logout-btn {
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      text-decoration: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .navbar .logout-btn:hover {
+      background-color: #d32f2f;
+    }
+
+  /*Estilos para la tabla*/
+
+  .product-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .product-table th,
+  .product-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .product-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .product-table td:last-child {
+    text-align: center;
+  }
+  
+  .product-table button {
+    padding: 5px 10px;
+    background-color: #2e73c2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .product-table button:hover {
+    background-color: #0c3463;
+  }

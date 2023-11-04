@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Panel de Administrador</title>
+  <link rel='stylesheet' href='/stylesheets/admin.css' />
+</head>
+<body>
+
+    <div class="navbar">
+      <h1>Panel de Administrador</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="admin-panel">
+        <div class="tabs">
+          <button class="tab-btn " onclick="location.href='/add-category'">Añadir categoría</button>
+          <button class="tab-btn" onclick="location.href='/add-product'">Añadir producto</button>
+          <button class="tab-btn " onclick="location.href='/add-image'">Añadir imagen</button>
+          <button class="tab-btn" onclick="location.href='/list'">Ver lista de productos</button>
+          <button class="tab-btn active" onclick="location.href='/add-product'">Actualizar producto</button>
+        </div>
+        <!-- Añadir categoría -->
+        <div id="add-category" class="tab-content ">
+          <h2>Añadir categoría</h2>
+        </div>
+        <!-- Añadir producto -->
+        <div id="add-product" class="tab-content active">
+          <h2>Actualizar producto</h2>
+          <% productos.forEach((producto) => { %>
+          <form action="/actualizar-producto/<%= producto.id %>" method="post">
+            <div class="form-group">
+              <label for="product-name">Nombre del producto:</label>
+              <input type="text" id="product-name" name="product-name" placeholder="Ingrese el nombre del producto" value="<%= producto.nombre %>" required>
+            </div>
+            <div class="form-group">
+              <label for="product-marca">Marca del producto:</label>
+              <input type="text" id="product-marca" name="product-marca" placeholder="Ingrese la marca del producto" value="<%= producto.marca %>" required>
+            </div>
+            <div class="form-group">
+              <label for="product-estado">Estado del producto:</label>
+              <input type="text" id="product-estado" name="product-estado" placeholder="Ingrese el estado del producto" value="<%= producto.estado %>" required>
+            </div>
+            <div class="form-group">
+              <label for="product-codigo">Codigo del producto:</label>
+              <input type="text" id="product-codigo" name="product-codigo" placeholder="Ingrese el codigo del producto" value="<%= producto.codigo %>" required>
+            </div>
+            <div class="form-group">
+              <label for="product-description">Descripción del producto:</label>
+              <textarea id="product-description" name="product-description" placeholder="Ingrese la descripción del producto" required><%= producto.descripcion %></textarea>
+            </div>
+            <div class="form-group">
+              <label for="product-category">Categoría del producto:</label>
+              <select id="product-category" name="product-category" required>
+                <option value="">Seleccione una categoría</option>
+                <!-- Aquí puedes generar las opciones del select dinámicamente desde la base de datos -->
+                <option value="1">categoría 1</option>
+                <option value="2">categoría 2</option>
+                <option value="3">categoría 3</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="product-price">Precio del producto:</label>
+              <input type="number" id="product-price" name="product-price" placeholder="Ingrese el precio del producto" value="<%= producto.precio %>" required>
+            </div>
+            <% }); %>
+            <button type="submit">Actualizar producto</button>
+        </form>
+
+        <script>
+          <% if (typeof message !== '' && message) { %>
+          // Verificar si hay un mensaje y mostrar una alerta con el contenido del mensaje
+            alert('<%= message %>');
+          <% } %>
+        </script>
+        </div>
+
+        <!-- Añadir imagen -->
+        <div id="add-image" class="tab-content">
+          <h2>Añadir imagen</h2>
+        </div>
+
+        <!-- Lista de productos -->
+        <div id="product-list" class="tab-content">
+          <h2>Ver lista de productos</h2>
+        </div>
+      </div>
+  <script src="/javascripts/admin.js"></script>
+</body>
+</html>
