@@ -17,6 +17,7 @@
           <button class="tab-btn active" onclick="location.href='/add-product'">Añadir producto</button>
           <button class="tab-btn " onclick="location.href='/add-image'">Añadir imagen</button>
           <button class="tab-btn" onclick="location.href='/list'">Ver lista de productos</button>
+          <button class="tab-btn" onclick="location.href='/category-list'">Ver lista de categorias</button>
         </div>
         <!-- Añadir categoría -->
         <div id="add-category" class="tab-content ">
@@ -51,9 +52,9 @@
               <select id="product-category" name="product-category" required>
                 <option value="">Seleccione una categoría</option>
                 <!-- Aquí puedes generar las opciones del select dinámicamente desde la base de datos -->
-                <option value="1">categoría 1</option>
-                <option value="2">categoría 2</option>
-                <option value="3">categoría 3</option>
+                <% productos.forEach((categoria) => { %>
+                <option value="<%= categoria.id %>"><%= categoria.nombre %></option>
+                <% }); %>
               </select>
             </div>
             <div class="form-group">

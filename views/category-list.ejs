@@ -16,8 +16,8 @@
           <button class="tab-btn" onclick="location.href='/add-category'">Añadir categoría</button>
           <button class="tab-btn" onclick="location.href='/add-product'">Añadir producto</button>
           <button class="tab-btn" onclick="location.href='/add-image'">Añadir imagen</button>
-          <button class="tab-btn active" onclick="location.href='/list'">Ver lista de productos</button>
-          <button class="tab-btn" onclick="location.href='/category-list'">Ver lista de categorias</button>
+          <button class="tab-btn" onclick="location.href='/list'">Ver lista de productos</button>
+          <button class="tab-btn active" onclick="location.href='/category-list'">Ver lista de categorias</button>
         </div>
         <!-- Añadir categoría -->
         <div id="add-category" class="tab-content ">
@@ -34,46 +34,34 @@
         </div>
 
         <!-- Lista de productos -->
-        <div id="product-list" class="tab-content active">
-          <h2>Ver lista de productos</h2>
+        <div id="category-list" class="tab-content active">
+          <h2>Ver lista de categorias</h2>
           <!-- Lista de productos -->
     <table class="product-table">
       <thead>
         <tr>
           <th>Nombre</th>
-          <th>Marca</th>
-          <th>Estado</th>
-          <th>Código</th>
-          <th>Descripción</th>
-          <th>Categoría</th>
-          <th>Precio</th>
           <th>Acciones</th> <!-- Columna para los botones de acciones -->
         </tr>
       </thead>
       <tbody>
         <!-- Aquí puedes generar las filas de la tabla dinámicamente desde la base de datos -->
-        <% productos.forEach((producto) => { %>
+        <% productos.forEach((categoria) => { %>
         <tr>
-          <td><%= producto.nombre %></td>
-          <td><%= producto.marca %></td>
-          <td><%= producto.estado %></td>
-          <td><%= producto.codigo %></td>
-          <td><%= producto.descripcion %></td>
-          <td><%= producto.categoria %></td>
-          <td><%= producto.precio %></td>
+          <td><%= categoria.nombre %></td>
           <td>
             <!-- Botón para eliminar producto -->
-            <button onclick="eliminarProducto('<%= producto.id %>')">Eliminar</button>
+            <button onclick="eliminarProducto('<%= categoria.id %>')">Eliminar</button>
             <!-- Botón para editar producto -->
-            <button onclick="editarProducto('<%= producto.id %>')">Editar</button>
+            <button onclick="editarProducto('<%= categoria.id %>')">Editar</button>
             <script>
                 function editarProducto(id) {
                   // Redirecciona a la URL con el ID como parámetro
-                  window.location.href = `/actualizar-producto/${id}`;
+                  window.location.href = `/actualizar-categoria/${id}`;
                 }
                 function eliminarProducto(id) {
                   // Redirecciona a la URL con el ID como parámetro
-                  window.location.href = `/eliminar-producto/${id}`;
+                  window.location.href = `/eliminar-categoria/${id}`;
                 }
             </script>
           </td>

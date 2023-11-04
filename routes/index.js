@@ -196,11 +196,10 @@ router.get('/add-image', (req, res, next) => {
 
 // Ruta para mostrar el panel de administrador
 router.get('/add-product', (req, res, next) => {
+  
 
-  db.all('SELECT p.nombre AS nombre, p.id AS id, p.estado, p.descripcion, p.precio, i.url AS imagen, c.nombre AS nombre_categoria ' +
-  'FROM productos p ' +
-  'LEFT JOIN imagenes i ON p.id = i.producto_id ' +
-  'LEFT JOIN categorias c ON p.categoria_id = c.id', (err, rows) => {
+  db.all('SELECT c.id, c.nombre ' +
+  'FROM categorias c;', (err, rows) => {
   if (err) {
     console.error('Error al obtener los productos:', err);
     return;
@@ -269,6 +268,14 @@ router.post('/add-product', (req, res) => {
   const descripcion = req.body['product-description']
   const categoria_id = parseInt(req.body['product-category'])
 
+  productos = [{
+    nombre: 'Producto 3',
+    id: 4,
+    estado: 'Usado',
+    descripcion: 'Descripcion 2',
+    precio: 499.99
+  }]
+
   // Insertar el Producto en la base de datos
   db.run('INSERT INTO productos (nombre, marca, estado, codigo, precio, descripcion, categoria_id) VALUES (?,?,?,?,?,?,?)', [nombre, marca, estado, codigo, precio, descripcion, categoria_id], (err) => {
     if (err) {
@@ -276,7 +283,7 @@ router.post('/add-product', (req, res) => {
       res.render('add-product', { message: 'Error al agregar el producto' });
       return;
     }
-    res.render('add-product', { message: 'Producto agregada correctamente' });
+    res.render('add-product', {productos, message: 'Producto agregado correctamente' });
   });
 });
 // Ruta para procesar el formulario y añadir Imagenes
@@ -372,4 +379,93 @@ router.post('/actualizar-producto/:id', (req, res) => {
     }
   });
 });
+
+
+// Ruta para mostrar el panel de administrador
+router.get('/category-list', (req, res, next) => {
+
+  db.all('SELECT c.id, c.nombre ' +
+  'FROM categorias c;'
+, (err, rows) => {
+  if (err) {
+    console.error('Error al obtener los productos:', err);
+    return;
+  }
+  
+  // Los resultados de la consulta estarán en el arreglo 'rows'
+  let productos = rows;
+
+    // Verificar si el usuario ha iniciado sesión
+    if (req.session.authenticated) {
+      console.log(productos)
+      res.render('category-list', { productos,  message: '' });
+    } else {
+      res.redirect('/login');
+    }
+  });
+});
+
+router.get('/actualizar-categoria/:id', (req, res) => {
+
+  const id = parseInt(req.params.id);
+
+  db.all('SELECT c.id, c.nombre ' +
+  'FROM categorias c '+
+  'WHERE c.id = ?', id, (err, rows) => {
+  if (err) {
+    console.error('Error al obtener los productos:', err);
+    return;
+  }
+  
+  // Los resultados de la consulta estarán en el arreglo 'rows'
+  let productos = rows;
+    // Verificar si el usuario ha iniciado sesión
+    if (req.session.authenticated) {
+      console.log(productos)
+      res.render('actualizar-categoria', { productos,  message: '' });
+    } else {
+      res.redirect('/login');
+    }
+  });
+});
+
+router.post('/actualizar-categoria/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const nombre = req.body['category-name']
+  console.log(nombre);
+  console.log(id);
+
+  // Ejecuta la consulta para actualizar el producto
+  const sql = 'UPDATE categorias SET nombre = ? WHERE id = ?';
+  db.run(sql, [nombre, id], function (error) {
+    if (error) {
+      console.error('Error al actualizar la categoría:', error.message);
+      res.redirect('/category-list'); // Redirecciona a una página de error, si corresponde
+    } else if (this.changes > 0) {
+      console.log(`Categoría con ID ${id} actualizado.`);
+      res.redirect('/category-list'); // Redirecciona a la página de productos actualizados
+    } else {
+      console.log(`Categoría con ID ${id} no encontrado.`);
+      res.redirect('/category-list'); // Redirecciona a la página de productos sin cambios
+    }
+  });
+});
+
+router.get('/eliminar-categoria/:id', (req, res) => {
+  const id = req.params.id;
+  // Aquí puedes hacer lo que necesites con el ID del producto
+  // Por ejemplo, buscar el producto en la base de datos y devolverlo como respuesta
+  db.run('DELETE FROM categorias WHERE id = ?', id, function (error) {
+    if (error) {
+      console.error('Error al eliminar la categoria:', error.message);
+    } else if (this.changes > 0) {
+      console.log(`Categoría con ID ${id} eliminado.`);
+      res.redirect('/category-list')
+    } else {
+      console.log(`Categoría con ID ${id} no encontrado.`);
+      res.redirect('/category-list')
+    }
+  });
+});
+
 module.exports = router;
