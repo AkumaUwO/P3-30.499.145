@@ -139,7 +139,17 @@ body {
 	color: #fff;
 	background-color: #2e73c2;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 800px) {
+	.catalogo {
+		margin: 0px;
+		padding: 0px;
+		display: block;
+	  }
+	.tarjeta-producto {
+		margin-bottom: 100px;
+		width: 80%;
+		height: 600px;
+	}
 	.navbar {
 	  font-size: 12px;
 	}
