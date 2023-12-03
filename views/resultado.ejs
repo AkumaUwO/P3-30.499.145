@@ -21,25 +21,16 @@
   </section>
 
   <section class="filtro">
-    <form method="post" action="/">
-      <label for="filtro nombre">Nombre:</label>
-      <input type="text" name="nombre-filtro" class="nombre-filtro" id="nombre-filtro">
-      <label for="filtro descripcion">Descripcion:</label>
-      <input type="text" name="descripcion-filtro" class="descripcion-filtro" id="descripcion-filtro">
-      <label for="filtro estado">Estado:</label>
-      <select name="estado-filtro" class="estado-filtro" id="estado-filtro">
-        <option value="todos">Todos</option>
-        <option value="Nuevo">Nuevo</option>
-        <option value="Usado">Usado</option>
-      </select>
-      <label for="filtro marca">Marca:</label>
-      <input type="text" name="marca-filtro" class="marca-filtro" id="marca-filtro">
-      <label for="category">Categoría:</label>
-      <select name="categoria-filtro" class="categoria-filtro" id="categoria-filtro">
-        <option value="todos">Todas</option>
-        <% categorias.forEach((categoria) => { %>
-          <option value="<%= categoria.categoriaNombre %>"><%= categoria.categoriaNombre %></option>
-          <% }); %>
+    <form action="#">
+      <label for="precio minimo">precio minimo:</label>
+      <input type="number" name="precio-minimo">
+      <label for="precio maximo">precio maximo:</label>
+      <input type="number" name="precio-maximo">
+      <label for="category">categoría:</label>
+      <select name="categoria">
+        <option value="0">Todas</option>
+        <option value="1">Motos</option>
+        <option value="2">Accesorios</option>
       </select>
       <input type="submit" class="filtrar" value="Filtrar">
     </form>

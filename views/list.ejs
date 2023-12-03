@@ -69,11 +69,28 @@
             <script>
                 function editarProducto(id) {
                   // Redirecciona a la URL con el ID como parámetro
-                  window.location.href = `/actualizar-producto/${id}`;
+                  if (confirm('¿Estás seguro de que quieres realizar esta acción?')) {
+                    // El usuario hizo clic en "Aceptar"
+                    window.location.href = `/actualizar-producto/${id}`;
+                    console.log('Acción confirmada');
+                  } else {
+                    // El usuario hizo clic en "Cancelar"
+                    console.log('Acción cancelada');
+                  }
+
                 }
                 function eliminarProducto(id) {
                   // Redirecciona a la URL con el ID como parámetro
-                  window.location.href = `/eliminar-producto/${id}`;
+                  if (confirm('¿Estás seguro de que quieres realizar esta acción?')) {
+                    // El usuario hizo clic en "Aceptar"
+                    window.location.href = `/eliminar-producto/${id}`;
+                    console.log('Acción confirmada');
+                  } else {
+                    // El usuario hizo clic en "Cancelar"
+                    console.log('Acción cancelada');
+                  }
+
+
                 }
             </script>
           </td>

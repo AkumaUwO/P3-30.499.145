@@ -6,36 +6,30 @@ const { render } = require('ejs');
 const sqlite3 = require('sqlite3').verbose();
 require('dotenv').config();
 
-
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 // Creando la constante de la base de datos
 const db = new sqlite3.Database('database.db');
 
-// Ejecutar una consulta SQL para crear la tabla "categorias"
-db.run(`CREATE TABLE categorias (
+// Definiendo una función para ejecutar consultas SQL y manejar errores
+function runQuery(query, message) {
+  db.run(query, (err) => {
+    if (err) {
+      console.error(`Error al ${message}:`, err.message);
+    } else {
+      console.log(`${message} correctamente.`);
+    }
+  });
+}
+
+// Crear las tablas "categorias", "productos" e "imagenes"
+runQuery(`CREATE TABLE categorias (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nombre TEXT NOT NULL
-)`, (err) => {
-  if (err) {
-    console.error('Error al crear la tabla "categorias":', err.message);
-  } else {
-    console.log('Tabla "categorias" creada correctamente.');
-  }
-});
+)`, 'crear la tabla "categorias"');
 
-// Ejecutar una consulta SQL para agregar una categoría
-// db.run(`INSERT INTO categorias (nombre) VALUES ('Motos')`, (err) => {
-//   if (err) {
-//     console.error('Error al agregar la categoría', err.message);
-//   } else {
-//     console.log('Categoría agregada correctamente');
-//   }
-// });
-
-// Ejecutar una consulta SQL para crear la tabla "productos"
-db.run(`CREATE TABLE productos (
+runQuery(`CREATE TABLE productos (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nombre VARCHAR NOT NULL,
   marca VARCHAR NOT NULL,
@@ -44,46 +38,19 @@ db.run(`CREATE TABLE productos (
   precio REAL NOT NULL,
   descripcion TEXT,
   categoria_id INTEGER
-)`, (err) => {
-  if (err) {
-    console.error('Error al crear la tabla "productos":', err.message);
-  } else {
-    console.log('Tabla "productos" creada correctamente.');
-  }
-});
+)`, 'crear la tabla "productos"');
 
-// Ejecutar una consulta SQL para agregar un producto
-// db.run(`INSERT INTO productos (nombre, marca, estado, codigo, precio, descripcion, categoria_id) VALUES ('Producto 2', 'Ducati', 'Usado', 158487, 499.99, 'Descripcion 2', 2)`, (err) => {
-//   if (err) {
-//     console.error('Error al agregar el producto', err.message);
-//   } else {
-//     console.log('Producto agregado correctamente');
-//   }
-// });
-
-// Ejecutar una consulta SQL para crear la tabla "imagenes"
-db.run(`CREATE TABLE imagenes (
+runQuery(`CREATE TABLE imagenes (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   producto_id INTEGER,
   url VARCHAR,
   destacado BOOLEAN
-)`, (err) => {
-  if (err) {
-    console.error('Error al crear la tabla "imagenes":', err.message);
-  } else {
-    console.log('Tabla "imagenes" creada correctamente.');
-  }
-});
+)`, 'crear la tabla "imagenes"');
 
-// Ejecutar una consulta SQL para agregar una imagen
-// db.run(`INSERT INTO imagenes (producto_id, url, destacado) VALUES (1, 'https://www.autobild.es/sites/navi.axelspringer.es/public/media/image/2022/11/mejores-motos-deportivas-2022-2882775.jpg', true)`, (err) => {
-//   if (err) {
-//     console.error('Error al agregar la imagen', err.message);
-//   } else {
-//     console.log('Imagen agregada correctamente');
-//   }
-// });
-
+// Agregar una categoría, un producto y una imagen (comentados)
+// runQuery(`INSERT INTO categorias (nombre) VALUES ('Motos')`, 'agregar la categoría');
+// runQuery(`INSERT INTO productos (nombre, marca, estado, codigo, precio, descripcion, categoria_id) VALUES ('Producto 2', 'Ducati', 'Usado', 158487, 499.99, 'Descripcion 2', 2)`, 'agregar el producto');
+// runQuery(`INSERT INTO imagenes (producto_id, url, destacado) VALUES (1, 'https://www.autobild.es/sites/navi.axelspringer.es/public/media/image/2022/11/mejores-motos-deportivas-2022-2882775.jpg', true)`, 'agregar la imagen');
 
 // Configuración del middleware de sesión
 router.use(session({
@@ -97,7 +64,7 @@ router.use(session({
 // Ruta para mostrar la vista principal
 router.get('/', (req, res) => {
   // Obtener los datos de los productos desde la base de datos
-  db.all('SELECT p.nombre AS nombre, p.marca, p.estado, p.descripcion, p.precio, i.url AS imagen, c.nombre AS categoria ' +
+  db.all('SELECT p.nombre AS nombre, c.nombre AS categoriaNombre, c.id AS categoriaId, p.marca, p.estado, p.descripcion, p.precio, i.url AS imagen, c.nombre AS categoria ' +
     'FROM productos p ' +
     'LEFT JOIN imagenes i ON p.id = i.producto_id ' +
     'LEFT JOIN categorias c ON p.categoria_id = c.id', (err, rows) => {
@@ -105,12 +72,55 @@ router.get('/', (req, res) => {
       console.error('Error al obtener los productos:', err);
       return;
     }
-    
+     
     // Los resultados de la consulta estarán en el arreglo 'rows'
     let productos = rows;
+    let categorias = rows;
     
     // Renderizar la vista EJS y pasar los datos de los productos
-    res.render('index', { productos });
+    res.render('index', { productos, categorias });
+  });
+});
+
+router.post('/', (req, res) => {
+  // Obtener los datos de los productos desde la base de datos
+  const nombre_filtro = (req.body['nombre-filtro']).toLowerCase()
+  const categoria_filtro = (req.body['categoria-filtro'])
+  const estado_filtro = (req.body['estado-filtro'])
+  const marca_filtro = (req.body['marca-filtro']).toLowerCase()
+  const descripcion_filtro = (req.body['descripcion-filtro']).toLowerCase()
+
+  db.all('SELECT p.nombre AS nombre, c.nombre AS categoriaNombre, c.id AS categoriaId, p.marca, p.estado, p.descripcion, p.precio, i.url AS imagen, c.nombre AS categoria ' +
+  'FROM productos p ' +
+  'LEFT JOIN imagenes i ON p.id = i.producto_id ' +
+  'LEFT JOIN categorias c ON p.categoria_id = c.id', (err, rows) => {
+  if (err) {
+    console.error('Error al obtener los productos:', err);
+    return;
+  }
+
+    // Definir la función que verifica las condiciones
+    function filtrar(producto) {
+      if(estado_filtro == 'todos' && categoria_filtro == 'todos'){
+        return producto.nombre.toLowerCase().includes(nombre_filtro);
+      } else if(estado_filtro == 'todos'){
+        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.categoria == categoria_filtro;
+      } else if(categoria_filtro == 'todos'){
+        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.estado == estado_filtro;
+      } else{
+        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.categoria == categoria_filtro && producto.estado == estado_filtro;
+      }
+    }
+     
+    // Los resultados de la consulta estarán en el arreglo 'rows'
+    let categorias = rows;
+    let productos = rows;
+    let productos_filtrados = productos.filter(filtrar);
+    productos = productos_filtrados;
+    console.log(productos);
+     
+    // Renderizar la vista EJS y pasar los datos de los productos
+    res.render('index', { productos, categorias });
   });
 });
 
