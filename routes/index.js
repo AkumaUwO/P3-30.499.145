@@ -102,13 +102,13 @@ router.post('/', (req, res) => {
     // Definir la función que verifica las condiciones
     function filtrar(producto) {
       if(estado_filtro == 'todos' && categoria_filtro == 'todos'){
-        return producto.nombre.toLowerCase().includes(nombre_filtro);
+        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.marca == marca_filtro && producto.descripcion == descripcion_filtro;
       } else if(estado_filtro == 'todos'){
-        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.categoria == categoria_filtro;
+        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.categoria == categoria_filtro && producto.marca == marca_filtro && producto.descripcion == descripcion_filtro;
       } else if(categoria_filtro == 'todos'){
-        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.estado == estado_filtro;
+        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.estado == estado_filtro && producto.marca == marca_filtro && producto.descripcion == descripcion_filtro;
       } else{
-        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.categoria == categoria_filtro && producto.estado == estado_filtro;
+        return producto.nombre.toLowerCase().includes(nombre_filtro) && producto.categoria == categoria_filtro && producto.estado == estado_filtro && producto.marca == marca_filtro && producto.descripcion == descripcion_filtro;
       }
     }
      
