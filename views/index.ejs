@@ -61,7 +61,7 @@
         <li><p class="marca"><b>Marca:</b> <%= producto.marca %></p></li>
         <li><p class="estado"><b>Estado:</b> <%= producto.estado %></p></li>
         <li><p class="precio"><b>Precio: <%= producto.precio %> $ </b> </p></li>
-        <button class="boton-compras">Comprar</button>
+        <a href="/compra?id=<%= producto.id %>"><button class="boton-compras">Comprar</a></button></a>
       </ul>
     </div>
     <% }); %>

@@ -3,11 +3,19 @@ var router = express.Router();
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const { render } = require('ejs');
+const fetch = require('node-fetch');
+const http = require('http');
 const sqlite3 = require('sqlite3').verbose();
 require('dotenv').config();
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+
+//Variables recaptcha
+const siteKey = '6Le8408pAAAAAAlxugiQ5AjsNIUREimInwWscctu';
+const secretKey = '6Le8408pAAAAAArZow73sPcZYlF-3DapWtCnrT7A';
+
+const url = 'https://www.google.com/recaptcha/api/siteverify';
 
 // Creando la constante de la base de datos
 const db = new sqlite3.Database('database.db');
@@ -82,7 +90,7 @@ router.use(session({
 // Ruta para mostrar la vista principal
 router.get('/', (req, res) => {
   // Obtener los datos de los productos desde la base de datos
-  db.all('SELECT p.nombre AS nombre, c.nombre AS categoriaNombre, c.id AS categoriaId, p.marca, p.estado, p.descripcion, p.precio, i.url AS imagen, c.nombre AS categoria ' +
+  db.all('SELECT p.nombre AS nombre, p.id AS id, c.nombre AS categoriaNombre, c.id AS categoriaId, p.marca, p.estado, p.descripcion, p.precio, i.url AS imagen, c.nombre AS categoria ' +
     'FROM productos p ' +
     'LEFT JOIN imagenes i ON p.id = i.producto_id ' +
     'LEFT JOIN categorias c ON p.categoria_id = c.id', (err, rows) => {
@@ -113,7 +121,7 @@ router.post('/', (req, res) => {
   const marca_filtro = (req.body['marca-filtro']).toLowerCase()
   const descripcion_filtro = (req.body['descripcion-filtro']).toLowerCase()
 
-  db.all('SELECT p.nombre AS nombre, c.nombre AS categoriaNombre, c.id AS categoriaId, p.marca, p.estado, p.descripcion, p.precio, i.url AS imagen, c.nombre AS categoria ' +
+  db.all('SELECT p.id AS id, p.nombre AS nombre, c.nombre AS categoriaNombre, c.id AS categoriaId, p.marca, p.estado, p.descripcion, p.precio, i.url AS imagen, c.nombre AS categoria ' +
   'FROM productos p ' +
   'LEFT JOIN imagenes i ON p.id = i.producto_id ' +
   'LEFT JOIN categorias c ON p.categoria_id = c.id', (err, rows) => {
@@ -143,8 +151,12 @@ router.post('/', (req, res) => {
     console.log(productos);
      
     // Renderizar la vista EJS y pasar los datos de los productos
-    res.render('index', { productos, categorias, message: '' });
+    res.render('index', { productos, categorias, message: '', username: ''});
   });
+});
+
+
+router.post('https://fakepayment.onrender.com/payments', (req, res) => {
 });
 
 // Registro de usuarios
@@ -201,7 +213,31 @@ router.post('/login-user', (req, res, next) => {
 
 /* Compras */
 router.get('/compra', function(req, res, next) {
-  res.render('compra', { message: '' });
+  const id = req.query.id;
+
+  
+  db.all('SELECT nombre, precio FROM productos WHERE id = ?', [id], (err, rows) => {
+  if (err) {
+    console.error('Error al obtener los productos:', err);
+    return;
+  }
+  
+  // Los resultados de la consulta estarán en el arreglo 'rows'
+  let productos = rows;
+
+    // Verificar si el usuario ha iniciado sesión
+    if (req.session.authenticated) {
+      console.log(productos)
+      res.render('compra', {productos, message: '' });
+    } else {
+      res.redirect('/login-user');
+    }
+  });
+
+});
+
+router.post('/compra', (req, res, next) => {
+
 });
 
 /* GET login page. */

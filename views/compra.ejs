@@ -3,6 +3,7 @@
 <head>
   <title>Login</title>
   <link rel='stylesheet' href='/stylesheets/login.css' />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
 
@@ -12,35 +13,33 @@
   </div>
 
   <div class="login-container">
-    <h2>Registrarse</h2>
-    <form method="post">
+    <h2>Comprar</h2>
+    <% productos.forEach((producto) => { %>
+    <form action="https://fakepayment.onrender.com/payments" method="post">
         <div class="form-group">
             <label for="producto">Nombre del producto:</label>
-            <input type="text" id="producto" name="producto" placeholder="Ingrese su nombre de usuario">
+            <input type="text" id="producto" name="producto" value="<%= producto.nombre %>" readonly>
+        </div>
+        <div class="form-group">
+          <label for="amount">Precio:</label>
+          <input type="number" value="<%= producto.precio %>" id="amount" name="amount" placeholder="Ingrese su nombre de usuario" readonly> USD$
         </div>
         <div class="form-group">
             <label for="amount">Cantidad:</label>
-            <input type="text" id="amount" name="amount" placeholder="Ingrese su nombre de usuario">
+            <input type="number" id="amount" name="amount" placeholder="Ingrese la cantidad">
         </div>
-        <div class="form-group">
-            <label for="amount">Monto:</label>
-            <input type="text" value="35000$" id="amount" name="amount" placeholder="Ingrese su nombre de usuario" readonly>
-        </div>
+
         <div class="form-group">
             <label for="card-number">Numero de Tarjeta:</label>
-            <input type="text" id="last-name" name="last-name" placeholder="Ingrese el numero de su tarjeta">
+            <input type="number" id="last-name" name="last-name" placeholder="Ingrese el numero de su tarjeta">
         </div>
       <div class="form-group">
         <label for="cvv">CVV:</label>
-        <input type="text" id="cvv" name="cvv" placeholder="Ingrese el cvv de su tarjeta">
+        <input type="number" id="cvv" name="cvv" placeholder="Ingrese el cvv de su tarjeta">
       </div>
       <div class="form-group">
-        <label for="expiration-month">Mes de Expiracion:</label>
-        <input type="text" id="expiration-month" name="expiration-month" placeholder="Ingrese el mes de expiracion de su tarjeta">
-      </div>
-      <div class="form-group">
-        <label for="expiration-year">Año de Expiracion:</label>
-        <input type="text" id="expiration-year" name="expiration-year" placeholder="Ingrese el año de expiracion de su tarjeta">
+        <label for="expiration-month">Fecha de Expiracion:</label>
+        <input type="month" id="expiration-month" name="expiration-month" placeholder="Ingrese el mes de expiracion de su tarjeta">
       </div>
       <div class="form-group">
         <label for="full-name">Nombre completo:</label>
@@ -48,10 +47,15 @@
       </div>
       <div class="form-group">
         <label for="currency">Moneda:</label>
-        <input type="text" id="currency" name="currency" placeholder="Ingrese su moneda">
+        <select id="currency" name="currency">
+          <option value="USD">Dolares</option>
+          <option value="VES">Bolivares</option>
+          <option value="EUR">Euros</option>
+        </select>
       </div>
       <button type="submit">Completar Compra</button>
     </form>
+    <% }); %>
   </div>
   <script>
     <% if (typeof message !== '' && message) { %>
