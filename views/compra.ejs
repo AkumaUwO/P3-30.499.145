@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel='stylesheet' href='/stylesheets/login.css' />
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>Formulario de Compras</h1>
+    <a href="/" class="logout-btn">Volver</a>
+  </div>
+
+  <div class="login-container">
+    <h2>Registrarse</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="producto">Nombre del producto:</label>
+            <input type="text" id="producto" name="producto" placeholder="Ingrese su nombre de usuario">
+        </div>
+        <div class="form-group">
+            <label for="amount">Cantidad:</label>
+            <input type="text" id="amount" name="amount" placeholder="Ingrese su nombre de usuario">
+        </div>
+        <div class="form-group">
+            <label for="amount">Monto:</label>
+            <input type="text" value="35000$" id="amount" name="amount" placeholder="Ingrese su nombre de usuario" readonly>
+        </div>
+        <div class="form-group">
+            <label for="card-number">Numero de Tarjeta:</label>
+            <input type="text" id="last-name" name="last-name" placeholder="Ingrese el numero de su tarjeta">
+        </div>
+      <div class="form-group">
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" name="cvv" placeholder="Ingrese el cvv de su tarjeta">
+      </div>
+      <div class="form-group">
+        <label for="expiration-month">Mes de Expiracion:</label>
+        <input type="text" id="expiration-month" name="expiration-month" placeholder="Ingrese el mes de expiracion de su tarjeta">
+      </div>
+      <div class="form-group">
+        <label for="expiration-year">Año de Expiracion:</label>
+        <input type="text" id="expiration-year" name="expiration-year" placeholder="Ingrese el año de expiracion de su tarjeta">
+      </div>
+      <div class="form-group">
+        <label for="full-name">Nombre completo:</label>
+        <input type="text" id="full-name" name="full-name" placeholder="Ingrese su Nombre completo">
+      </div>
+      <div class="form-group">
+        <label for="currency">Moneda:</label>
+        <input type="text" id="currency" name="currency" placeholder="Ingrese su moneda">
+      </div>
+      <button type="submit">Completar Compra</button>
+    </form>
+  </div>
+  <script>
+    <% if (typeof message !== '' && message) { %>
+    // Verificar si hay un mensaje y mostrar una alerta con el contenido del mensaje
+      alert('<%= message %>');
+    <% } %>
+</script>
+</body>
+</html>

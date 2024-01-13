@@ -47,6 +47,24 @@ runQuery(`CREATE TABLE imagenes (
   destacado BOOLEAN
 )`, 'crear la tabla "imagenes"');
 
+runQuery(`CREATE TABLE usuarios (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre VARCHAR,
+  apellido VARCHAR,
+  correo VARCHAR,
+  contraseña VARCHAR
+)`, 'crear la tabla "usuarios"');
+
+runQuery(`CREATE TABLE compras (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  cliente_id INTEGER,
+  producto_id INTEGER,
+  cantidad INTEGER,
+  fecha VARCHAR,
+  ip_cliente VARCHAR
+)`, 'crear la tabla "usuarios"');
+
+
 // Agregar una categoría, un producto y una imagen (comentados)
 // runQuery(`INSERT INTO categorias (nombre) VALUES ('Motos')`, 'agregar la categoría');
 // runQuery(`INSERT INTO productos (nombre, marca, estado, codigo, precio, descripcion, categoria_id) VALUES ('Producto 2', 'Ducati', 'Usado', 158487, 499.99, 'Descripcion 2', 2)`, 'agregar el producto');
@@ -78,7 +96,12 @@ router.get('/', (req, res) => {
     let categorias = rows;
     
     // Renderizar la vista EJS y pasar los datos de los productos
-    res.render('index', { productos, categorias });
+    if(typeof req.session.name !== 'undefined'){
+      res.render('index', { productos, categorias, message: '', username: req.session.name});
+    } else{
+      res.render('index', { productos, categorias, message: '', username: ''});
+    }
+
   });
 });
 
@@ -120,8 +143,65 @@ router.post('/', (req, res) => {
     console.log(productos);
      
     // Renderizar la vista EJS y pasar los datos de los productos
-    res.render('index', { productos, categorias });
+    res.render('index', { productos, categorias, message: '' });
   });
+});
+
+// Registro de usuarios
+
+router.get('/registro', (req, res) => {
+    // Renderizar la vista EJS y pasar los datos de los productos
+    res.render('registro', {message: ''});
+});
+
+router.post('/registro', (req, res) => {
+  const name = req.body['name'];
+  const lastsname = req.body['last-name'];
+  const email = req.body['email'];
+  const password = req.body['password'];
+
+  // Insertar la categoría en la base de datos
+  db.run('INSERT INTO usuarios (nombre, apellido, correo, contraseña) VALUES (?, ?, ?, ?)', [name, lastsname, email, password], (err) => {
+    if (err) {
+      console.error('Error al registrar el usuario:', err);
+      res.render('registro', { message: 'Error al registrar el usuario' });
+      return;
+    }
+    res.render('registro', { message: 'Usuario agregado correctamente' });
+  });
+});
+
+//Autenticacion de usuarios
+
+router.get('/login-user', function(req, res, next) {
+  res.render('login-usuario', { message: '' });
+});
+
+router.post('/login-user', (req, res, next) => {
+  const { email, password } = req.body;
+
+  
+  db.get('SELECT * FROM usuarios WHERE correo = ? AND contraseña = ?', [email, password], (err, row) => {
+    if (err) {
+      console.error(err.message);
+    }
+    if (row) {
+      result = row;
+      req.session.name = row.nombre;
+      console.log('Inicio de sesión válido');
+      req.session.authenticated = true;
+      res.redirect('/');
+    } else {
+      console.log('Inicio de sesión inválido');
+      res.render('login-usuario',{message: 'Error al iniciar sesion'});
+    }
+  });
+});
+
+
+/* Compras */
+router.get('/compra', function(req, res, next) {
+  res.render('compra', { message: '' });
 });
 
 /* GET login page. */
@@ -132,11 +212,12 @@ router.get('/login', function(req, res, next) {
   //Cerrar Sesión
 router.get('/logout', (req, res) => {
   // Destruir la sesión y redirigir al inicio de sesión
+  req.session.name = '';
   req.session.destroy((err) => {
     if (err) {
       console.error(err);
     }
-    res.redirect('/login');
+    res.redirect('/');
   });
 });
 
@@ -148,6 +229,7 @@ router.post('/login', (req, res, next) => {
   if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
     // Establecer la sesión como autenticada
     req.session.authenticated = true;
+    req.session.admin = true;
     res.redirect('/add-category');
   } else {
     res.redirect('/login');
@@ -170,7 +252,7 @@ router.get('/add-category', (req, res, next) => {
   let productos = rows;
 
     // Verificar si el usuario ha iniciado sesión
-    if (req.session.authenticated) {
+    if (req.session.authenticated && req.session.admin) {
       console.log(productos)
       res.render('add-category', { productos,  message: ''  });
     } else {

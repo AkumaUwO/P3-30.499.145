@@ -12,6 +12,11 @@
   <div class="navbar">
     <h1>Venta de Articulos para Motos y Vehiculos</h1>
     <a href="/login" class="logout-btn">Administrar Productos</a>
+    <% if (username !== '') { %>
+        <a href="/logout" class="logout-btn">Cerrar Sesion</a>
+    <% } else{ %>
+      <a href="/login-user" class="logout-btn">Iniciar sesión</a>
+    <% } %>
   </div>
 
   
@@ -61,6 +66,12 @@
     </div>
     <% }); %>
   </section>
+  <script>
+      <% if (username !== '') { %>
+      // Verificar si hay un mensaje y mostrar una alerta con el contenido del mensaje
+      alert('Bienvenido <%= username %>');
+     <% } %>
+  </script>
 
 </body>
 </html>
