@@ -3,7 +3,6 @@ var router = express.Router();
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const { render } = require('ejs');
-import fetch from 'node-fetch';
 const http = require('http');
 const sqlite3 = require('sqlite3').verbose();
 require('dotenv').config();
